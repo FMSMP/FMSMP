@@ -3,3 +3,8 @@ dist/
 .DS_Store
 *.log
 .vite/
+
+# سرور پرداخت
+server/.env
+server/orders.json
+server/orders.json.tmp

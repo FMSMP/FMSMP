@@ -8,7 +8,9 @@
     "build": "vite build && vite-node scripts/prerender.mjs",
     "preview": "vite preview",
     "test": "vite-node scripts/smoke-test.mjs",
-    "deploy": "npm run build && node scripts/build-pages.mjs"
+    "deploy": "npm run build && node scripts/build-pages.mjs",
+    "server": "node --env-file=server/.env server/index.mjs",
+    "test:payment": "node scripts/payment-test.mjs && node scripts/payment-e2e.mjs"
   },
   "dependencies": {
     "react": "^18.3.1",
