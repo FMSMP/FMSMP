@@ -1,0 +1,15 @@
+{
+  "name": "FMSMP — سرور ماینکرفت فارسی",
+  "short_name": "FMSMP",
+  "description": "سرور ماینکرفت فارسی با محوریت صنعت Slimefun، اقتصاد پویا و چت صوتی زنده.",
+  "lang": "fa-IR",
+  "dir": "rtl",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#05030c",
+  "theme_color": "#05030c",
+  "icons": [
+    { "src": "./icon.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ]
+}
