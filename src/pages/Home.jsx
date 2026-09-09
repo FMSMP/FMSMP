@@ -3,12 +3,21 @@ import { Icon } from "../components/Icon.jsx";
 import { Button, DiscordLink, SectionHead, Counter, useReveal, useSpotlight } from "../components/ui.jsx";
 import { SITE, FEATURES, RANKS, SHARDS, STEPS, RULES, FAQ, HERO_STATS } from "../data/site.js";
 import { copyText, fmtNum, navigate } from "../lib/store.js";
+import { useServerStatus } from "../lib/useStatus.js";
 import heroBg from "../assets/hero.jpg";
+
+const STATUS_TEXT = {
+  loading: "در حال بررسی وضعیت سرور…",
+  online: "سرور آنلاین است",
+  offline: "سرور موقتاً آفلاین است",
+  unknown: "وضعیت سرور در دسترس نیست",
+};
 
 export default function Home({ notify }) {
   const [openFaq, setOpenFaq] = useState(0);
   const [copied, setCopied] = useState(false);
   const spotlight = useSpotlight();
+  const status = useServerStatus();
 
   useReveal([]);
 
@@ -32,9 +41,14 @@ export default function Home({ notify }) {
       <section className="hero" id="home">
         <div className="hero-bg" style={{ backgroundImage: `url(${heroBg})` }} />
         <div className="hero-inner">
-          <span className="hero-pill">
+          <span className={`hero-pill status-${status.state}`}>
             <i className="live-dot" />
-            سرور فعال است · {SITE.edition} {SITE.version}
+            {STATUS_TEXT[status.state]}
+            {status.state === "online" && (
+              <b>
+                · {fmtNum(status.players)} بازیکن آنلاین
+              </b>
+            )}
           </span>
 
           <h1>
@@ -68,6 +82,17 @@ export default function Home({ notify }) {
           </div>
 
           <div className="hero-stats">
+            <div className={`hero-stat live status-${status.state}`}>
+              <Icon name="users" />
+              <span>بازیکنان آنلاین</span>
+              <b>
+                {status.state === "online"
+                  ? `${fmtNum(status.players)}${status.max ? ` / ${fmtNum(status.max)}` : ""}`
+                  : status.state === "loading"
+                    ? "…"
+                    : "—"}
+              </b>
+            </div>
             {HERO_STATS.map((s) => (
               <div className="hero-stat" key={s.label}>
                 <Icon name={s.icon} />
@@ -92,10 +117,10 @@ export default function Home({ notify }) {
               ["gear", "SLIMEFUN INDUSTRY"],
               ["coin", "DYNAMIC ECONOMY"],
               ["voice", "PROXIMITY VOICE CHAT"],
-              ["sword", "CLAN WARS & PVP"],
-              ["shield", "ANTI-CHEAT PROTECTED"],
-              ["server", "24/7 UPTIME"],
-              ["star", "PERSIAN COMMUNITY"],
+              ["sword", "SURVIVAL & PVP"],
+              ["cube", "JAVA 1.21.x"],
+              ["discord", "DISCORD COMMUNITY"],
+              ["star", "PERSIAN SERVER"],
             ].map(([icon, text]) => (
               <span key={`${dup}-${text}`}>
                 <Icon name={icon} />
@@ -136,19 +161,21 @@ export default function Home({ notify }) {
               <div className="about-metrics">
                 <div>
                   <strong>
-                    <Counter to={20} format={fmtNum} />
+                    {status.state === "online" ? (
+                      <Counter to={status.players} format={fmtNum} key={status.players} />
+                    ) : (
+                      "—"
+                    )}
                   </strong>
-                  <small>TPS پایدار</small>
+                  <small>بازیکن آنلاین</small>
                 </div>
                 <div>
-                  <strong>
-                    <Counter to={99} format={(v) => `${fmtNum(v)}٪`} />
-                  </strong>
-                  <small>آپتایم سرور</small>
+                  <strong>{status.version ? status.version.replace(/[^\d.\sx-]/gi, "").trim() || SITE.version : SITE.version}</strong>
+                  <small>نسخه سرور</small>
                 </div>
                 <div>
-                  <strong>۲۴/۷</strong>
-                  <small>پشتیبانی فعال</small>
+                  <strong>Java</strong>
+                  <small>پلتفرم بازی</small>
                 </div>
               </div>
             </div>

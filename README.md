@@ -3,6 +3,8 @@
 وب‌سایت سرور ماینکرفت فارسی **FMSMP**؛ سرور اسلایم‌فان و اقتصادی با چت صوتی زنده.
 
 🎮 **آی‌پی سرور:** `fmsmp.9craft.vip` · Java Edition 1.21.x
+🌐 **آدرس سایت:** <https://fmsmp.github.io/FMSMP/>
+💬 **دیسکورد:** <https://discord.gg/ASFRkUgq7>
 
 ---
 
@@ -16,9 +18,18 @@
 - **سوالات پرتکرار** — آکاردئون هشت‌تایی
 - **حساب کاربری** — ثبت‌نام/ورود، مشاهده موجودی شارد و تاریخچه تراکنش
 - **پنل مدیریت** — آمار، مدیریت کاربران، افزودن شارد، لاگ فعالیت‌ها
+- **وضعیت زنده سرور** — تعداد بازیکنان آنلاین مستقیماً از API عمومی ماینکرفت
 - **حالت روشن و تاریک** · ریسپانسیو کامل · RTL · دسترس‌پذیر
+- **SEO کامل** — متاتگ‌ها، Open Graph، Schema.org، sitemap، robots و PWA manifest
 
 > ⚠️ داده‌های کاربران در `localStorage` مرورگر ذخیره می‌شود (نسخه بدون بک‌اند).
+> یعنی حساب‌ها بین دستگاه‌ها همگام نمی‌شوند و رمزها رمزنگاری‌نشده ذخیره می‌شوند.
+
+### وضعیت زنده سرور
+
+تعداد بازیکنان آنلاین از `api.mcsrvstat.us` خوانده می‌شود و در صورت خطا به
+`api.mcstatus.io` سوییچ می‌کند. پاسخ‌ها یک دقیقه در `sessionStorage` کش می‌شوند.
+اگر هر دو سرویس در دسترس نباشند، سایت «نامشخص» نشان می‌دهد — نه «آفلاین».
 
 ---
 
@@ -57,7 +68,14 @@ src/
 ├── components/         Navbar · Footer · Icon · Gate · ui
 ├── pages/              Home · Auth · Profile · Owner
 ├── styles/             base · layout · sections · app
+├── lib/status.js       دریافت وضعیت زنده سرور
+├── lib/useStatus.js    هوک React وضعیت سرور
 └── assets/hero.jpg     پس‌زمینه هیرو
+
+public/                 مستقیماً به ریشه خروجی کپی می‌شود
+├── og.jpg              تصویر اشتراک‌گذاری (۱۲۰۰×۶۳۰)
+├── icon.png            آیکون PWA
+├── robots.txt · sitemap.xml · manifest.webmanifest
 
 scripts/
 ├── smoke-test.mjs      تست رندر صفحات
@@ -77,5 +95,16 @@ scripts/
 | مراحل اتصال | `STEPS` |
 | قوانین | `RULES` |
 | سوالات پرتکرار | `FAQ` |
+
+### تغییر دامنه
+
+اگر دامنه اختصاصی گرفتید، این دو جا را عوض کنید:
+
+1. `src/index.html` — همه `https://fmsmp.github.io/FMSMP/` را جایگزین کنید
+   (canonical، og:url، og:image، twitter:image و بلوک JSON-LD)
+2. `public/sitemap.xml` و `public/robots.txt`
+3. `SITE.url` در `src/data/site.js`
+
+سپس یک فایل `CNAME` با نام دامنه در `public/` بسازید.
 
 پس از ویرایش، `npm run deploy` را اجرا کنید تا `index.html` ریشه بروز شود.

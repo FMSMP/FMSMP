@@ -11,6 +11,8 @@ export const SITE = {
   discord: "https://discord.gg/ASFRkUgq7",
   edition: "Java Edition",
   year: "۱۴۰۴",
+  url: "https://fmsmp.github.io/FMSMP/",
+  ownerContact: "farbodmohammadian1390@gmail.com",
 };
 
 export const OWNER = {
@@ -29,10 +31,10 @@ export const STORAGE = {
   theme: "fmsmp_theme",
 };
 
+// آمار ثابت هیرو (بازیکنان آنلاین جداگانه و به‌صورت زنده از API خوانده می‌شود)
 export const HERO_STATS = [
-  { label: "نسخه سرور", value: "1.21.x", icon: "cube" },
+  { label: "نسخه", value: "1.21.x", icon: "cube" },
   { label: "پلتفرم", value: "Java", icon: "bolt" },
-  { label: "آنلاین", value: "۲۴/۷", icon: "pulse" },
 ];
 
 export const FEATURES = [
@@ -66,17 +68,17 @@ export const FEATURES = [
   },
   {
     icon: "shield",
-    title: "آنتی‌چیت و امنیت",
-    text: "سیستم محافظت لند، بکاپ روزانه و آنتی‌چیت فعال؛ دستاوردت جایی نمی‌رود.",
+    title: "محافظت از سازه‌ها",
+    text: "لند خودت را claim کن تا ساخته‌هایت از گریفینگ در امان بمانند.",
     accent: "gold",
-    tags: ["Anti-Cheat", "Backup"],
+    tags: ["Land Claim", "Protection"],
   },
   {
-    icon: "server",
-    title: "پینگ پایین",
-    text: "سرور بهینه با TPS پایدار و آپتایم بالا؛ بدون لگ، بدون قطعی‌های آزاردهنده.",
+    icon: "discord",
+    title: "پشتیبانی دیسکورد",
+    text: "سوال، مشکل یا خرید؟ در دیسکورد تیکت بزن تا تیم پشتیبانی بررسی کند.",
     accent: "cyan",
-    tags: ["20 TPS", "Uptime"],
+    tags: ["Ticket", "Support"],
   },
 ];
 

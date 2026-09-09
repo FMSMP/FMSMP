@@ -299,6 +299,11 @@
   backdrop-filter: blur(12px);
   animation: fade-up 0.7s var(--ease) both;
 }
+.hero-pill b {
+  color: var(--gold);
+  font-weight: 700;
+}
+
 .live-dot {
   position: relative;
   width: 8px;
@@ -314,6 +319,38 @@
   border-radius: 50%;
   border: 1px solid var(--emerald);
   animation: ping 1.9s var(--ease-soft) infinite;
+}
+
+/* رنگ نقطه بر اساس وضعیت واقعی سرور */
+.status-loading .live-dot {
+  background: var(--text-3);
+  box-shadow: none;
+}
+.status-loading .live-dot::after {
+  border-color: var(--text-3);
+}
+.status-offline .live-dot,
+.status-unknown .live-dot {
+  background: var(--rose);
+  box-shadow: 0 0 12px var(--rose);
+}
+.status-offline .live-dot::after,
+.status-unknown .live-dot::after {
+  border-color: var(--rose);
+  animation: none;
+}
+.status-unknown .live-dot {
+  background: var(--text-3);
+  box-shadow: none;
+}
+
+.hero-stat.live b {
+  color: var(--emerald);
+}
+.hero-stat.status-loading b,
+.hero-stat.status-unknown b,
+.hero-stat.status-offline b {
+  color: var(--text-3);
 }
 @keyframes ping {
   to {

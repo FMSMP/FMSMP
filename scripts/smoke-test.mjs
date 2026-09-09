@@ -15,9 +15,21 @@ global.window = {
   scrollTo() {}, scrollY: 0, innerHeight: 900,
   setTimeout, clearTimeout, matchMedia: () => ({ matches: false, addEventListener() {} }),
 };
+const sess = new Map();
+global.sessionStorage = {
+  getItem: (k) => (sess.has(k) ? sess.get(k) : null),
+  setItem: (k, v) => sess.set(k, String(v)),
+  removeItem: (k) => sess.delete(k),
+};
+global.AbortController = class { constructor(){ this.signal = {}; } abort(){} };
+global.fetch = async () => { throw new Error("offline in test"); };
+global.setInterval = () => 0;
+global.clearInterval = () => {};
 global.document = {
   documentElement: { dataset: {}, scrollHeight: 3000 },
   getElementById: () => null,
+  addEventListener() {}, removeEventListener() {},
+  visibilityState: "visible",
   querySelectorAll: () => [],
   createElement: () => ({ style: {}, setAttribute() {}, remove() {}, select() {}, setSelectionRange() {}, focus() {} }),
   body: { appendChild() {} },
