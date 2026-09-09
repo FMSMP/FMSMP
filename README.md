@@ -4,8 +4,7 @@
 
 🎮 **آی‌پی سرور:** `fmsmp.9craft.vip` · Java Edition 1.21.x
 🌐 **آدرس سایت:** <https://fmsmp.github.io/FMSMP/>
-💬 **دیسکورد:** <https://discord.gg/ASFRkUgq7>
-
+💬 دیسکورد: <https://discord.gg/gTqTv9FqFx>
 ---
 
 ## امکانات سایت
