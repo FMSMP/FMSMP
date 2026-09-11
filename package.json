@@ -4,10 +4,14 @@
   "version": "2.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --host 0.0.0.0 --port 5173",
     "build": "vite build && vite-node scripts/prerender.mjs",
     "preview": "vite preview",
-    "test": "vite-node scripts/smoke-test.mjs",
+    "test": "vite-node scripts/render-test.mjs",
+    "test:owner": "vite-node scripts/owner-test.mjs",
+    "test:seo": "node scripts/seo-test.mjs",
+    "test:domain": "node scripts/domain-test.mjs",
+    "test:hero": "node scripts/hero-test.mjs",
     "deploy": "npm run build && node scripts/build-pages.mjs",
     "server": "node --env-file=server/.env server/index.mjs",
     "test:payment": "node scripts/payment-test.mjs && node scripts/payment-e2e.mjs"

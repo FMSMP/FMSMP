@@ -68,27 +68,41 @@ export function Toast({ toast }) {
 export function Counter({ to, duration = 1400, format = (v) => v }) {
   const [val, setVal] = useState(0);
   const ref = useRef(null);
-  const done = useRef(false);
+  const started = useRef(false);
 
   useEffect(() => {
     const node = ref.current;
     if (!node) return;
-    const io = new IntersectionObserver(
-      ([entry]) => {
-        if (!entry.isIntersecting || done.current) return;
-        done.current = true;
-        const start = performance.now();
-        const tick = (now) => {
-          const p = Math.min((now - start) / duration, 1);
-          setVal(Math.round(to * (1 - Math.pow(1 - p, 3))));
-          if (p < 1) requestAnimationFrame(tick);
-        };
-        requestAnimationFrame(tick);
-      },
-      { threshold: 0.4 }
-    );
-    io.observe(node);
-    return () => io.disconnect();
+
+    // ⚠️ طبق اسپک: اگر فقط به IntersectionObserver تکیه کنیم، در بعضی حالت‌ها
+    // (تب‌های پس‌زمینه، باگ مرورگر، عناصر مخفی) شمارش روی عدد اولیه گیر می‌کند.
+    // پس یک setTimeout پشتیبان هم می‌گذاریم تا شمارش همیشه شروع شود.
+    let fallbackTimer = null;
+
+    const start = () => {
+      if (started.current) return;
+      started.current = true;
+      if (fallbackTimer) clearTimeout(fallbackTimer);
+      const t0 = performance.now();
+      const tick = (now) => {
+        const p = Math.min((now - t0) / duration, 1);
+        setVal(Math.round(to * (1 - Math.pow(1 - p, 3))));
+        if (p < 1) requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
+    };
+
+    let io = null;
+    if (typeof IntersectionObserver !== "undefined") {
+      io = new IntersectionObserver(([entry]) => entry.isIntersecting && start(), { threshold: 0.4 });
+      io.observe(node);
+    }
+    fallbackTimer = setTimeout(start, 1100);
+
+    return () => {
+      if (io) io.disconnect();
+      if (fallbackTimer) clearTimeout(fallbackTimer);
+    };
   }, [to, duration]);
 
   return <span ref={ref}>{format(val)}</span>;

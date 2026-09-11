@@ -45,15 +45,13 @@ export default function Home({ notify }) {
             <i className="live-dot" />
             {STATUS_TEXT[status.state]}
             {status.state === "online" && (
-              <b>
-                · {fmtNum(status.players)} بازیکن آنلاین
-              </b>
+              <b>· {status.players === 0 ? "اولین نفر باش!" : `${fmtNum(status.players)} بازیکن آنلاین`}</b>
             )}
           </span>
 
           <h1>
-            <span>{SITE.name}</span>
-            <b className="sr-only"> — سرور ماینکرفت فارسی اسلایم‌فان و اقتصادی</b>
+            <span data-text={SITE.name}>{SITE.name}</span>
+            <b className="sr-only"> — سرور ماینکرفت سروایول ایرانی و فارسی</b>
           </h1>
 
           <p className="hero-sub">
@@ -85,10 +83,12 @@ export default function Home({ notify }) {
           <div className="hero-stats">
             <div className={`hero-stat live status-${status.state}`}>
               <Icon name="users" />
-              <span>بازیکنان آنلاین</span>
+              <span>{status.state === "online" && status.players === 0 ? "اولین نفر باش!" : "بازیکنان آنلاین"}</span>
               <b>
                 {status.state === "online"
-                  ? `${fmtNum(status.players)}${status.max ? ` / ${fmtNum(status.max)}` : ""}`
+                  ? status.players === 0
+                    ? fmtNum(0)
+                    : `${fmtNum(status.players)}${status.max ? ` / ${fmtNum(status.max)}` : ""}`
                   : status.state === "loading"
                     ? "…"
                     : "—"}
@@ -158,6 +158,13 @@ export default function Home({ notify }) {
                 برای اتصال کافی است ماینکرفت نسخه <b>{SITE.edition} {SITE.version}</b> را باز کنید و آی‌پی{" "}
                 <b>{SITE.ip}</b> را در بخش Multiplayer اضافه کنید. عضویت رایگان است و خرید رنک یا شارد کاملاً
                 اختیاری و فقط از طریق دیسکورد انجام می‌شود.
+              </p>
+              <p>
+                تیم FMSMP نگهداری سرور سروایول ایرانی را جدی می‌گیرد: سیستم مقابله با تقلب فعال است، ایونت‌های
+                هفتگی برگزار می‌شود و به‌روزرسانی‌ها بر اساس بازخورد مستقیم بازیکنان اعمال می‌شود. اگر تازه‌کاری،
+                از بخش «نحوه اتصال» شروع کن؛ اگر سوالی داری، پاسخش احتمالاً در «سوالات پرتکرار» همین صفحه یا
+                دیسکورد منتظرت است. هدف ما ساده است: یک سرور پایدار، عادلانه و دوست‌داشتنی که هر بار ورودت حس
+                خانه بودن داشته باشد.
               </p>
               <div className="tags">
                 <span>SLIMEFUN</span>

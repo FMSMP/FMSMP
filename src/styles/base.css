@@ -380,6 +380,14 @@ ul {
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
+  /* ⚠️ استثنای انیمیشن درخشش عنوان (طبق اسپک):
+     قانون سراسری بالا با iteration-count:1 لوپ درخشش را می‌کُشد؛
+     با specificity بالاتر و !important آن را مستثنا می‌کنیم تا لوپ ادامه پیدا کند. */
+  .hero h1 span::after {
+    animation: shine 3.5s linear infinite !important;
+    animation-duration: 3.5s !important;
+    animation-iteration-count: infinite !important;
+  }
   .reveal {
     opacity: 1;
     transform: none;

@@ -36,10 +36,24 @@ export default function Auth({ onLogin, notify }) {
         return;
       }
 
-      const user = getUsers().find((u) => u.email.toLowerCase() === email && u.password === login.password);
+      // ⚠️ امنیت: رمز کاربران عادی به‌صورت SHA-256 هش می‌شود (قبلاً متن ساده بود).
+      // برای سازگاری، رمزهای قدیمی متنی هم پذیرفته می‌شوند و در همین ورود به هش ارتقا می‌یابند.
+      const user = getUsers().find((u) => u.email.toLowerCase() === email);
       if (!user) {
         notify("ایمیل یا رمز عبور درست نیست", "error");
         return;
+      }
+
+      const passHash = await sha256(login.password);
+      const passOk = user.password === passHash || user.password === login.password;
+      if (!passOk) {
+        notify("ایمیل یا رمز عبور درست نیست", "error");
+        return;
+      }
+
+      if (user.password !== passHash) {
+        // ارتقای امنیتی رمز قدیمی متنی به هش
+        setUsers(getUsers().map((u) => (u.id === user.id ? { ...u, password: passHash } : u)));
       }
 
       const now = new Date().toISOString();
@@ -60,7 +74,7 @@ export default function Auth({ onLogin, notify }) {
     }
   };
 
-  const doRegister = (e) => {
+  const doRegister = async (e) => {
     e.preventDefault();
     if (reg.username.trim().length < 3) return notify("نام کاربری حداقل ۳ کاراکتر باشد", "error");
     if (!/^\S+@\S+\.\S+$/.test(reg.email)) return notify("ایمیل معتبر وارد کنید", "error");
@@ -75,7 +89,8 @@ export default function Auth({ onLogin, notify }) {
       id: crypto.randomUUID(),
       username: reg.username.trim(),
       email: reg.email.trim(),
-      password: reg.password,
+      // امنیت: فقط هش رمز ذخیره می‌شود، نه خود رمز (کلید رمز به‌صورت SHA-256)
+      password: await sha256(reg.password),
       shards: 0,
       history: [],
       joinedAt: new Date().toISOString(),

@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Icon } from "../components/Icon.jsx";
 import { Button } from "../components/ui.jsx";
 import Gate from "../components/Gate.jsx";
@@ -15,14 +15,35 @@ import {
 } from "../lib/store.js";
 
 export default function Owner({ session, notify, onLogout }) {
-  const [users, setLocalUsers] = useState(getUsers());
+  // ⚠️ طبق اسپک: داده‌ها را فقط موقع mount نخوان — یک بازخوانی زنده لازم است
+  // وگرنه رویدادهای ثبت‌شده در تب‌های دیگر تا رفرش کامل دیده نمی‌شوند.
+  const readAll = () => ({
+    users: getUsers(),
+    activity: getActivity(),
+    visitors: visitorCount(),
+    logins: loginCount(),
+  });
+  const [data, setData] = useState(readAll);
+  const { users, activity, visitors, logins } = data;
   const [query, setQuery] = useState("");
   const [selected, setSelected] = useState(null);
   const [amount, setAmount] = useState(100);
 
-  const activity = getActivity();
-  const visitors = visitorCount();
-  const logins = loginCount();
+  const refresh = () => setData(readAll());
+
+  useEffect(() => {
+    // بازخوانی زنده: هر ۵ ثانیه + هنگام فوکوس پنجره + هنگام تغییر storage در تب‌های دیگر
+    refresh();
+    const id = setInterval(refresh, 5000);
+    window.addEventListener("focus", refresh);
+    window.addEventListener("storage", refresh);
+    return () => {
+      clearInterval(id);
+      window.removeEventListener("focus", refresh);
+      window.removeEventListener("storage", refresh);
+    };
+  }, []);
+
   const totalShards = users.reduce((s, u) => s + (u.shards || 0), 0);
 
   const filtered = useMemo(
@@ -32,9 +53,37 @@ export default function Owner({ session, notify, onLogout }) {
 
   const commit = (next, message) => {
     setUsers(next);
-    setLocalUsers(next);
+    setData((d) => ({ ...d, users: next }));
     log(message);
     notify("تغییرات ذخیره شد", "success");
+  };
+
+  // دانلود فایل پشتیبان کامل (JSON) از همه کلیدهای fmsmp_*
+  const backup = () => {
+    try {
+      const payload = {
+        exportedAt: new Date().toISOString(),
+        source: location.href,
+        users: getUsers(),
+        activity: getActivity(),
+        visitors: JSON.parse(localStorage.getItem("fmsmp_visitors") || "[]"),
+        visitorId: localStorage.getItem("fmsmp_visitor_id"),
+        loginCount: loginCount(),
+        theme: localStorage.getItem("fmsmp_theme"),
+      };
+      const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `fmsmp-backup-${new Date().toISOString().slice(0, 10)}.json`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 500);
+      notify("فایل پشتیبان دانلود شد", "success");
+    } catch {
+      notify("ساخت فایل پشتیبان ممکن نشد", "error");
+    }
   };
 
   const addShards = (user) => {
@@ -78,10 +127,20 @@ export default function Owner({ session, notify, onLogout }) {
             <span className="micro-label">فرماندهی FMSMP</span>
             <h1>پنل مدیریت</h1>
           </div>
-          <Button className="btn-danger btn-sm" onClick={onLogout}>
-            <Icon name="logout" />
-            خروج
-          </Button>
+          <div className="page-top-actions">
+            <Button className="btn-ghost btn-sm" onClick={refresh} title="بازخوانی دستی داده‌ها">
+              <Icon name="refresh" />
+              بروزرسانی
+            </Button>
+            <Button className="btn-ghost btn-sm" onClick={backup} title="دانلود پشتیبان JSON">
+              <Icon name="download" />
+              پشتیبان
+            </Button>
+            <Button className="btn-danger btn-sm" onClick={onLogout}>
+              <Icon name="logout" />
+              خروج
+            </Button>
+          </div>
         </div>
 
         <div className="stats-grid">
@@ -224,7 +283,18 @@ export default function Owner({ session, notify, onLogout }) {
                   </div>
                 ))
             ) : (
-              <p className="empty">هنوز کاربری ثبت‌نام نکرده است.</p>
+              <div className="empty-note">
+                <b>چرا این لیست خالی است؟</b>
+                <p>
+                  داده‌های این سایت (کاربران، رویدادها و بازدیدها) در localStorage همین مرورگر ذخیره می‌شود و هر
+                  مرورگر/دستگاه فضای جداگانه‌ای دارد. بنابراین مالک فقط رویدادهای مرورگر خودش را می‌بیند و
+                  ثبت‌نام‌های بازیکنان دیگر در مرورگر خودشان، اینجا نمایش داده نمی‌شود.
+                </p>
+                <p>
+                  برای راه‌حل واقعی و متمرکز، احراز هویت و دیتابیس سمت سرور (مثل Supabase یا Firebase) لازم است؛
+                  سرویس پرداخت و تحویل خودکار در پوشه server/ برای همین مرحله آماده شده است.
+                </p>
+              </div>
             )}
           </div>
         </section>
