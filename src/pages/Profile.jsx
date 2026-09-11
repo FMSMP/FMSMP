@@ -24,7 +24,8 @@ export default function Profile({ session, onLogout }) {
           <div className="profile-card glass">
             <div className="avatar">{user?.username?.charAt(0).toUpperCase() || "؟"}</div>
             <span className="micro-label">بازیکن FMSMP</span>
-            <h1>{user?.username || "—"}</h1>
+            {/* h2 — صفحه فقط یک h1 مجاز دارد (اسپک سئو) */}
+            <h2 className="profile-name">{user?.username || "—"}</h2>
             <p>{user?.email}</p>
 
             <div className="balance">

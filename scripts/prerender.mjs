@@ -9,6 +9,7 @@ import { readFileSync, writeFileSync } from "node:fs";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 import { webcrypto } from "node:crypto";
+import { ACTIVE_URL } from "../src/data/domain.js";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 
@@ -22,7 +23,7 @@ const storage = {
 
 global.localStorage = storage;
 Object.defineProperty(global, "sessionStorage", { value: storage, configurable: true });
-global.location = { hash: "", href: "https://fmsmp.github.io/FMSMP/" };
+global.location = { hash: "", href: ACTIVE_URL };
 global.window = {
   location: global.location,
   addEventListener() {},
@@ -44,6 +45,19 @@ global.document = {
   body: { appendChild() {} },
 };
 Object.defineProperty(global, "navigator", { value: { clipboard: null }, configurable: true });
+// ⚠️ طبق اسپک: mock های محیط پیش‌رندر — querySelectorAll (آرایه خالی)، matchMedia، requestAnimationFrame (بی‌اثر)
+global.matchMedia = () => ({
+  matches: false,
+  media: "",
+  onchange: null,
+  addListener() {},
+  removeListener() {},
+  addEventListener() {},
+  removeEventListener() {},
+  dispatchEvent() {
+    return false;
+  },
+});
 global.IntersectionObserver = class {
   observe() {}
   unobserve() {}
@@ -93,7 +107,7 @@ html = html.replace(ldPattern, `<script type="application/ld+json">${jsonLd}</sc
 
 writeFileSync(file, html);
 
-// گزارش میزان متن قابل ایندکس
+// گزارش میزان متن قابل ایندکس — طبق اسپک حداقل ۷٬۰۰۰ کاراکتر لازم است
 const text = markup
   .replace(/<(script|style)[\s\S]*?<\/\1>/g, "")
   .replace(/<[^>]+>/g, " ")
@@ -102,3 +116,16 @@ const text = markup
 
 console.log(`✓ پیش‌رندر انجام شد — ${markup.length.toLocaleString("en")} کاراکتر HTML`);
 console.log(`  متن قابل ایندکس برای موتورهای جستجو: ${text.length.toLocaleString("en")} کاراکتر`);
+
+if (text.length < 7000) {
+  console.error(
+    `✗ متن قابل ایندکس ${text.length} کاراکتر است؛ حداقل ۷٬۰۰۰ کاراکتر لازم است (اسپک سئو).`
+  );
+  process.exit(1);
+}
+
+const h1Count = (markup.match(/<h1[\s>]/g) || []).length;
+if (h1Count !== 1) {
+  console.error(`✗ تعداد <h1> در خروجی پیش‌رندر باید دقیقاً ۱ باشد — الان ${h1Count} است.`);
+  process.exit(1);
+}

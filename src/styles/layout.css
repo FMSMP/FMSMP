@@ -368,17 +368,48 @@
   animation: fade-up 0.8s var(--ease) 0.1s both;
 }
 .hero h1 span {
+  position: relative;
+  display: inline-block;
   background: linear-gradient(100deg, #fff 0%, var(--gold) 42%, #fff6dd 60%, var(--gold-deep) 100%);
   background-size: 220% 100%;
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
   filter: drop-shadow(0 0 44px rgba(246, 196, 83, 0.32));
-  animation: shine 7s linear infinite;
+}
+
+/* ⚠️ انیمیشن درخشش — طبق اسپک حتماً linear، نه ease و نه cubic-bezier.
+   با cubic-bezier(0.22,1,0.36,1) نیمی از مسیر در ۵٪ اول طی می‌شود و پرشی دیده می‌شود.
+   نکته RTL: برای اینکه درخشش واقعاً «از راست به چپ» رد شود، مسیر از -150% به 150% است
+   (با ترتیب 150%→-150% حرکت از چپ به راست دیده می‌شد). پس از ۴۵٪ تا پایان یک دوره مکث می‌کند. */
+.hero h1 span::after {
+  content: attr(data-text);
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    100deg,
+    transparent 0%,
+    transparent 40%,
+    rgba(255, 255, 255, 0.95) 50%,
+    transparent 60%,
+    transparent 100%
+  );
+  background-size: 250% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  pointer-events: none;
+  animation: shine 3.5s linear infinite;
 }
 @keyframes shine {
-  to {
-    background-position: -220% 0;
+  0% {
+    background-position: -150% 0;
+  }
+  45% {
+    background-position: 150% 0;
+  }
+  100% {
+    background-position: 150% 0;
   }
 }
 

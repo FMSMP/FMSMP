@@ -137,6 +137,8 @@ const P = {
     </>
   ),
   moon: <path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5Z" />,
+  refresh: <path d="M21 12a9 9 0 1 1-2.64-6.36M21 3v6h-6" />,
+  download: <path d="M12 3v12m0 0 4-4m-4 4-4-4M4 21h16" />,
   arrowUp: <path d="M12 20V5m0 0-6 6m6-6 6 6" />,
 };
 

@@ -67,8 +67,12 @@ npm run deploy     # بیلد می‌کند و index.html ریشه را بروز
 GitHub Pages یا هر هاست استاتیک ساده بدون تنظیمات اضافه کار می‌کند.
 
 ```bash
-npm test           # تست دود: رندر همه صفحات
-npm run preview    # پیش‌نمایش خروجی بیلد
+npm test               # رندر SSR همه صفحات و محتوای کلیدی
+npm run test:owner     # پنل مدیریت + بازرسی آیکون‌ها + منطق نشست type
+npm run test:seo       # متاتگ‌ها، JSON-LD، پیش‌رندر ≥ ۷۰۰۰ کاراکتر
+npm run test:domain    # سازگاری سوییچ دوخطی دامنه (DOMAIN.md)
+node scripts/hero-test.mjs   # انیمیشن درخشش: linear + استثنای reduced-motion
+npm run preview        # پیش‌نمایش خروجی بیلد
 ```
 
 ---
@@ -118,11 +122,16 @@ server/                 سرویس پرداخت و تحویل خودکار (اخ
 └── .env.example        نمونه متغیرهای محیطی
 
 scripts/
+├── render-test.mjs     تست رندر صفحات (npm test)
+├── owner-test.mjs      تست پنل مدیریت + تطبیق آیکون‌ها
+├── seo-test.mjs        تست سئو و متاتگ‌ها
+├── domain-test.mjs     تست تنظیمات دامنه
+├── hero-test.mjs       تست انیمیشن درخشش (linear)
+├── test-env.mjs        محیط مشترک شبیه‌سازی مرورگر برای تست‌ها
 ├── payment-test.mjs    تست واحد پرداخت و RCON
 ├── payment-e2e.mjs     تست کامل جریان خرید
 ├── prerender.mjs       تبدیل صفحه به HTML استاتیک برای موتورهای جستجو
 ├── seo-data.mjs        ساخت JSON-LD از محتوای واقعی
-├── smoke-test.mjs      تست رندر صفحات
 └── build-pages.mjs     کپی خروجی به ریشه
 ```
 
