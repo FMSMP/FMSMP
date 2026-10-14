@@ -116,6 +116,11 @@ export function useReveal(deps = []) {
         entries.forEach((e) => {
           if (e.isIntersecting) {
             e.target.classList.add("visible");
+            // ⚠️ رفع باگ آکاردئون سوالات: React موقع تغییر state (مثلاً باز/بسته شدن سوال)
+            // کل className را بازنویسی می‌کند و کلاس visible پاک می‌شود → عنصر ناپدید می‌شد.
+            // data-revealed در style.inline نمی‌آید و React آن را بازنویسی نمی‌کند،
+            // پس CSS با [data-revealed="1"] هم عنصر را نمایان نگه می‌دارد.
+            e.target.dataset.revealed = "1";
             io.unobserve(e.target);
           }
         }),

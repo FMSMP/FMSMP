@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Icon } from "../components/Icon.jsx";
 import { Button, DiscordLink, SectionHead, Counter, useReveal, useSpotlight } from "../components/ui.jsx";
-import { SITE, FEATURES, RANKS, SHARDS, STEPS, RULES, FAQ, HERO_STATS } from "../data/site.js";
+import { SITE, FEATURES, RANKS, MONEY_PACKS, STEPS, RULES, FAQ, HERO_STATS } from "../data/site.js";
 import { copyText, fmtNum, navigate } from "../lib/store.js";
 import { useServerStatus } from "../lib/useStatus.js";
 import heroBg from "../assets/hero.jpg";
@@ -156,7 +156,7 @@ export default function Home({ notify }) {
               </p>
               <p>
                 برای اتصال کافی است ماینکرفت نسخه <b>{SITE.edition} {SITE.version}</b> را باز کنید و آی‌پی{" "}
-                <b>{SITE.ip}</b> را در بخش Multiplayer اضافه کنید. عضویت رایگان است و خرید رنک یا شارد کاملاً
+                <b>{SITE.ip}</b> را در بخش Multiplayer اضافه کنید. عضویت رایگان است و خرید رنک یا پول بازی کاملاً
                 اختیاری و فقط از طریق دیسکورد انجام می‌شود.
               </p>
               <p>
@@ -285,27 +285,27 @@ export default function Home({ notify }) {
         </div>
       </section>
 
-      {/* ══ شارد ══ */}
-      <section className="section" id="shards">
+      {/* ══ پول بازی ══ */}
+      <section className="section" id="money">
         <div className="section-inner">
           <SectionHead
-            eyebrow="ارز قلمرو"
-            title="بسته‌های شارد"
-            text="هر شارد، یک قدم به امکانات بیشتر. قیمت هر شارد ۱٬۰۰۰ تومان است."
+            eyebrow="واحد پول قلمرو"
+            title="بسته‌های پول بازی"
+            text="پول بازی را مستقیم داخل سرور تحویل بگیر و بازار را در دست بگیر؛ نرخ تبدیل یک‌به‌یک با تومان است."
           />
-          <div className="shard-grid">
-            {SHARDS.map((s) => (
-              <DiscordLink key={s.amount} className="shard-card glass reveal" onPurchase>
-                {s.tag && <span className="shard-tag">{s.tag}</span>}
-                <span className="shard-gem">
-                  <Icon name="gem" />
+          <div className="money-grid">
+            {MONEY_PACKS.map((s) => (
+              <DiscordLink key={s.price} className="money-card glass reveal" onPurchase>
+                {s.tag && <span className="money-tag">{s.tag}</span>}
+                <span className="money-gem">
+                  <Icon name="coin" />
                 </span>
                 <h3>
-                  <strong>{fmtNum(s.amount)}</strong>
-                  شارد
+                  <strong>{s.amount}</strong>
+                  پول
                 </h3>
-                <p className="shard-price">{fmtNum(s.price)} تومان</p>
-                <span className="shard-unit">هر دانه ۱٬۰۰۰ تومان</span>
+                <p className="money-price">{fmtNum(s.price)} تومان</p>
+                <span className="money-unit">نرخ یک‌به‌یک با تومان</span>
                 <div className="card-cta">
                   <span>خرید از دیسکورد</span>
                   <Icon name="chevron" />
@@ -322,7 +322,7 @@ export default function Home({ notify }) {
               <span className="micro-label">مسیر امن خرید</span>
               <h2>همه خریدها فقط از دیسکورد با تیکت</h2>
               <p>
-                برای خرید رنک یا شارد وارد دیسکورد شوید و یک تیکت رسمی باز کنید. هیچ روش پرداخت دیگری از سمت FMSMP
+                برای خرید رنک یا پول بازی وارد دیسکورد شوید و یک تیکت رسمی باز کنید. هیچ روش پرداخت دیگری از سمت FMSMP
                 معتبر نیست.
               </p>
             </div>

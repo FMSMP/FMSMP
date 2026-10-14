@@ -366,7 +366,11 @@ ul {
   transition: opacity 0.85s var(--ease), transform 0.85s var(--ease);
   will-change: opacity, transform;
 }
-.reveal.visible {
+/* visible توسط IntersectionObserver اضافه می‌شود؛ data-revealed پشتیبان آن است تا
+   وقتی React کل className را بازنویسی می‌کند (مثلاً کلیک روی سوالات پرتکرار)،
+   عنصر نمایان بماند و «غیب» نشود. */
+.reveal.visible,
+.reveal[data-revealed="1"] {
   opacity: 1;
   transform: none;
 }

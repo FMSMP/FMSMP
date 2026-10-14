@@ -43,7 +43,7 @@ export default function Footer({ notify }) {
               <button onClick={() => jump("ranks")}>رنک‌ها</button>
             </li>
             <li>
-              <button onClick={() => jump("shards")}>بسته‌های شارد</button>
+              <button onClick={() => jump("money")}>بسته‌های پول</button>
             </li>
             <li>
               <button onClick={() => jump("join")}>نحوه اتصال</button>

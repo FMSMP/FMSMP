@@ -391,7 +391,7 @@
   opacity: 1;
 }
 
-.rank-card.master {
+.rank-card.fm {
   --rank-grad: linear-gradient(90deg, #f6c453, #ff9d5c, #f6c453);
   --rank-glow: rgba(246, 196, 83, 0.3);
   --rank-border: rgba(246, 196, 83, 0.5);
@@ -520,13 +520,13 @@
   transition: transform 0.32s var(--ease);
 }
 .rank-card:hover .card-cta,
-.shard-card:hover .card-cta {
+.money-card:hover .card-cta {
   background: var(--rank-c, var(--gold));
   color: #12081f;
   box-shadow: 0 10px 28px var(--rank-glow, rgba(246, 196, 83, 0.3));
 }
 .rank-card:hover .card-cta svg,
-.shard-card:hover .card-cta svg {
+.money-card:hover .card-cta svg {
   transform: translateX(-5px);
 }
 
@@ -549,13 +549,13 @@
   color: var(--gold);
 }
 
-/* ── شارد ──────────────────────────────────── */
-.shard-grid {
+/* ── پول بازی ──────────────────────────────────── */
+.money-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
   gap: 18px;
 }
-.shard-card {
+.money-card {
   --rank-c: var(--gold);
   --rank-glow: rgba(246, 196, 83, 0.26);
   position: relative;
@@ -568,12 +568,12 @@
   overflow: hidden;
   transition: transform 0.45s var(--ease), border-color 0.45s var(--ease), box-shadow 0.45s var(--ease);
 }
-.shard-card:hover {
+.money-card:hover {
   transform: translateY(-9px);
   border-color: rgba(246, 196, 83, 0.45);
   box-shadow: var(--shadow-lg);
 }
-.shard-tag {
+.money-tag {
   position: absolute;
   top: 14px;
   left: 14px;
@@ -585,7 +585,7 @@
   font-weight: 800;
   color: var(--gold);
 }
-.shard-gem {
+.money-gem {
   display: grid;
   place-items: center;
   width: 74px;
@@ -596,20 +596,20 @@
   color: var(--gold);
   transition: 0.45s var(--ease);
 }
-.shard-gem svg {
+.money-gem svg {
   width: 1.9em;
   height: 1.9em;
 }
-.shard-card:hover .shard-gem {
+.money-card:hover .money-gem {
   transform: rotate(10deg) scale(1.08);
   box-shadow: 0 0 40px rgba(246, 196, 83, 0.38);
 }
-.shard-card h3 {
+.money-card h3 {
   font-size: 1.05rem;
   color: var(--text-2);
   font-weight: 600;
 }
-.shard-card h3 strong {
+.money-card h3 strong {
   display: block;
   font-size: 2.3rem;
   font-weight: 900;
@@ -617,11 +617,11 @@
   letter-spacing: -0.03em;
   line-height: 1.1;
 }
-.shard-price {
+.money-price {
   font-size: 1.05rem;
   font-weight: 700;
 }
-.shard-unit {
+.money-unit {
   padding: 5px 13px;
   border-radius: 99px;
   background: var(--panel-2);
@@ -629,7 +629,7 @@
   font-size: 0.7rem;
   color: var(--text-3);
 }
-.shard-card .card-cta {
+.money-card .card-cta {
   width: 100%;
   justify-content: center;
   margin-top: 4px;

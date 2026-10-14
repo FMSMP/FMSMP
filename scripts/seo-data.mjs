@@ -1,7 +1,7 @@
 // ساخت داده‌های ساختاریافته (JSON-LD) از روی محتوای واقعی سایت.
 // این باعث می‌شود گوگل سوالات پرتکرار و قیمت رنک‌ها را مستقیم در نتایج نشان دهد.
 
-import { SITE, FAQ, RANKS, SHARDS } from "../src/data/site.js";
+import { SITE, FAQ, RANKS, MONEY_PACKS } from "../src/data/site.js";
 
 const URL = SITE.url;
 
@@ -85,7 +85,7 @@ export function buildJsonLd() {
           },
         ],
       },
-      // رنک‌ها و بسته‌های شارد به‌عنوان محصول
+      // رنک‌ها و بسته‌های پول بازی به‌عنوان محصول
       ...RANKS.map((r) => ({
         "@type": "Product",
         name: `رنک ${r.name} — ${SITE.name}`,
@@ -99,10 +99,10 @@ export function buildJsonLd() {
           url: SITE.discord,
         },
       })),
-      ...SHARDS.map((s) => ({
+      ...MONEY_PACKS.map((s) => ({
         "@type": "Product",
-        name: `${s.amount} شارد — ${SITE.name}`,
-        description: `بسته ${s.amount} شارد برای سرور ماینکرفت ${SITE.name}`,
+        name: `${s.amount} پول بازی — ${SITE.name}`,
+        description: `بسته ${s.amount} پول بازی برای سرور ماینکرفت ${SITE.name}`,
         category: "Minecraft Server Currency",
         offers: {
           "@type": "Offer",
