@@ -9,7 +9,7 @@ import { check, finish, stripTags } from "./test-env.mjs";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 
-const { SITE, FAQ, RANKS, SHARDS } = await import(join(root, "src/data/site.js"));
+const { SITE, FAQ, RANKS, MONEY_PACKS } = await import(join(root, "src/data/site.js"));
 const { buildJsonLd } = await import(join(root, "scripts/seo-data.mjs"));
 
 const EXPECTED_TITLE = "FMSMP | سرور ماینکرفت سروایول ایرانی و فارسی";
@@ -37,7 +37,7 @@ check("گره WebSite", count("WebSite") === 1);
 check("گره VideoGameServer", count("VideoGameServer") === 1);
 check("گره FAQPage با همه سوالات", count("FAQPage") === 1 && ld["@graph"].find((n) => n["@type"] === "FAQPage").mainEntity.length === FAQ.length);
 check("گره HowTo برای اتصال", count("HowTo") === 1);
-check("Product برای هر رنک (۴ عدد)", count("Product") === RANKS.length + SHARDS.length, `${count("Product")} محصول`);
+check("Product برای هر رنک (۴ عدد)", count("Product") === RANKS.length + MONEY_PACKS.length, `${count("Product")} محصول`);
 const prices = ld["@graph"]
   .filter((n) => n["@type"] === "Product")
   .map((n) => String(n.offers.price))

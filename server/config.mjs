@@ -51,10 +51,10 @@ export const CONFIG = {
 //  دستورات با {player} جایگزین می‌شوند.
 // ─────────────────────────────────────────────────────────────
 export const CATALOG = {
-  "rank-master": {
-    title: "رنک مستر",
+  "rank-fm": {
+    title: "رنک FM",
     price: 650000, // تومان
-    commands: ["lp user {player} parent addtemp master 30d"],
+    commands: ["lp user {player} parent addtemp fm 30d"],
   },
   "rank-supreme": {
     title: "رنک سوپریم",
@@ -71,19 +71,19 @@ export const CATALOG = {
     price: 120000,
     commands: ["lp user {player} parent addtemp plus 30d"],
   },
-  "shard-100": {
-    title: "۱۰۰ شارد",
+  "money-100k": {
+    title: "۱۰۰ هزار پول بازی",
     price: 100000,
-    commands: ["points give {player} 100"],
+    commands: ["eco give {player} 100000"],
   },
-  "shard-500": {
-    title: "۵۰۰ شارد",
+  "money-500k": {
+    title: "۵۰۰ هزار پول بازی",
     price: 500000,
-    commands: ["points give {player} 500"],
+    commands: ["eco give {player} 500000"],
   },
-  "shard-1000": {
-    title: "۱۰۰۰ شارد",
+  "money-1m": {
+    title: "۱ میلیون پول بازی",
     price: 1000000,
-    commands: ["points give {player} 1000"],
+    commands: ["eco give {player} 1000000"],
   },
 };

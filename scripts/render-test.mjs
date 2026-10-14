@@ -28,11 +28,12 @@ const renderAt = async (hash, localStorageSeed = {}) => {
 const home = await renderAt("");
 check("home رندر شد", home.length > 4000, `${home.length} کاراکتر`);
 check("عنوان hero با data-text (لایه درخشش)", home.includes('data-text="FMSMP"'));
-check("بخش‌های اصلی", ["id=\"about\"", "id=\"join\"", "id=\"ranks\"", "id=\"shards\"", "id=\"rules\"", "id=\"faq\""].every((id) => home.includes(id)));
+check("بخش‌های اصلی", ["id=\"about\"", "id=\"join\"", "id=\"ranks\"", "id=\"money\"", "id=\"rules\"", "id=\"faq\""].every((id) => home.includes(id)));
 check("آی‌پی سرور نمایش داده شده", home.includes(SITE.ip));
 check("لینک دیسکورد درست", home.includes("discord.gg/gTqTv9FqFx"));
 check("قیمت رنک‌ها (تومان)", ["۶۵۰٬۰۰۰", "۴۵۰٬۰۰۰", "۲۵۰٬۰۰۰", "۱۲۰٬۰۰۰"].every((p) => home.includes(p)));
-check("بسته‌های شارد", ["۱۰۰٬۰۰۰", "۵۰۰٬۰۰۰", "۱٬۰۰۰٬۰۰۰"].every((p) => home.includes(p)));
+check("بسته‌های پول بازی", ["۱۰۰٬۰۰۰", "۵۰۰٬۰۰۰", "۱٬۰۰۰٬۰۰۰"].every((p) => home.includes(p)));
+check("رنک FM رندر شده", home.includes(">FM</h3>") && home.includes("قدرتمندترین"));
 check("حالت بارگذاری: شمارنده «…» نه صفر", home.includes("…") && !home.includes(">۰<"));
 check("دقیقاً یک h1 در صفحه اصلی", (home.match(/<h1[\s>]/g) || []).length === 1);
 
@@ -98,6 +99,10 @@ check("دکمه بروزرسانی و پشتیبان", owner.includes("بروز�
 for (const [name, html] of [["home", home], ["auth", auth], ["profile", profile], ["owner", owner]]) {
   check(`بدون نشت undefined در ${name}`, !/>undefined</.test(html) && !/name="undefined"/.test(html));
 }
+
+// ── نام شارد و رنک مستر نباید هیچ‌جا باشند (بر اساس درخواست مالک) ──
+check("هیچ اشاره‌ای به شارد در سایت نیست", ![home, auth, profile, owner].some((h) => h.includes("شارد")) && !home.includes("Shard") && !home.includes("shard"));
+check("رنک مستر کاملاً حذف شده", ![home, owner].some((h) => h.includes("مستر") || /MASTER/.test(h)));
 
 // ── لینک دیسکورد قدیمی نباید هیچ‌جا باشد ──
 check("لینک دیسکورد قدیمی حذف شده", !home.includes("ASFRkUgq7"));

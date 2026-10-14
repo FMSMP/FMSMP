@@ -113,14 +113,14 @@ export default function Auth({ onLogin, notify }) {
         <aside className="auth-aside">
           <span className="micro-label">دروازه قلمرو</span>
           <h1>
-            خزانه شارد
+            خزانه پول
             <em>منتظر توست.</em>
           </h1>
-          <p>حساب بساز، موجودی شاردت را ببین و تاریخچه فعالیتت را در قلمرو دنبال کن.</p>
+          <p>حساب بساز، موجودی پولت را ببین و تاریخچه فعالیتت را در قلمرو دنبال کن.</p>
           <ul className="auth-perks">
             <li>
               <Icon name="check" />
-              مشاهده لحظه‌ای موجودی شارد
+              مشاهده لحظه‌ای موجودی پول
             </li>
             <li>
               <Icon name="check" />

@@ -119,7 +119,7 @@ async function apiCallback({ Authority, Status }) {
 // ── سناریوها ─────────────────────────────────────────────────
 console.log("\n── جریان کامل خرید رنک ──");
 {
-  const pay = await apiPay({ sku: "rank-master", player: "Notch" });
+  const pay = await apiPay({ sku: "rank-fm", player: "Notch" });
   check("درخواست پرداخت موفق", pay.code === 200);
   check("لینک درگاه برگشت", pay.body.url?.includes("StartPay"));
   check("مبلغ از کاتالوگ سرور خوانده شد (۶۵۰٬۰۰۰)", lastRequest.amount === 650000, `(${lastRequest.amount})`);
@@ -128,7 +128,7 @@ console.log("\n── جریان کامل خرید رنک ──");
   const result = await apiCallback({ Authority: pay.body.authority, Status: "OK" });
   check("پرداخت تایید و تحویل شد", result === "success", `(${result})`);
   check("دستور رنک روی سرور اجرا شد",
-    rconCommands.includes("lp user Notch parent addtemp master 30d"),
+    rconCommands.includes("lp user Notch parent addtemp fm 30d"),
     JSON.stringify(rconCommands));
   check("سفارش تحویل‌شده علامت خورد", db.get(pay.body.authority).delivered === true);
   check("شماره پیگیری ذخیره شد", db.get(pay.body.authority).refId === 55555);
@@ -138,20 +138,20 @@ console.log("\n── امنیت: دستکاری مبلغ از سمت کاربر
 {
   lastRequest = null;
   // کاربر تلاش می‌کند مبلغ ۱۰۰۰ تومان بفرستد
-  const pay = await apiPay({ sku: "rank-master", player: "Hacker", amount: 1000, price: 1000 });
+  const pay = await apiPay({ sku: "rank-fm", player: "Hacker", amount: 1000, price: 1000 });
   check("مبلغ کاربر نادیده گرفته شد", lastRequest.amount === 650000, `(${lastRequest.amount})`);
 }
 
 console.log("\n── امنیت: محصول و نام نامعتبر ──");
 {
   check("محصول جعلی رد شد", (await apiPay({ sku: "rank-free", player: "Notch" })).code === 400);
-  check("نام با فاصله رد شد", (await apiPay({ sku: "shard-100", player: "bad name" })).code === 400);
-  check("تزریق دستور رد شد", (await apiPay({ sku: "shard-100", player: "a\nop x" })).code === 400);
+  check("نام با فاصله رد شد", (await apiPay({ sku: "money-100k", player: "bad name" })).code === 400);
+  check("تزریق دستور رد شد", (await apiPay({ sku: "money-100k", player: "a\nop x" })).code === 400);
 }
 
 console.log("\n── لغو پرداخت ──");
 {
-  const pay = await apiPay({ sku: "shard-100", player: "Steve" });
+  const pay = await apiPay({ sku: "money-100k", player: "Steve" });
   const before = rconCommands.length;
   const result = await apiCallback({ Authority: pay.body.authority, Status: "NOK" });
   check("وضعیت لغو ثبت شد", result === "cancelled");
@@ -161,13 +161,13 @@ console.log("\n── لغو پرداخت ──");
 
 console.log("\n── جلوگیری از تحویل دوباره (کلیک مجدد کاربر) ──");
 {
-  const pay = await apiPay({ sku: "shard-500", player: "Alex" });
+  const pay = await apiPay({ sku: "money-500k", player: "Alex" });
   await apiCallback({ Authority: pay.body.authority, Status: "OK" });
   const after1 = rconCommands.filter((c) => c.includes("Alex")).length;
   // کاربر همان لینک بازگشت را دوباره باز می‌کند
   await apiCallback({ Authority: pay.body.authority, Status: "OK" });
   const after2 = rconCommands.filter((c) => c.includes("Alex")).length;
-  check("شارد فقط یک‌بار داده شد", after1 === 1 && after2 === 1, `(${after1}/${after2})`);
+  check("پول فقط یک‌بار داده شد", after1 === 1 && after2 === 1, `(${after1}/${after2})`);
 }
 
 console.log("\n── تلاش مجدد وقتی سرور ماینکرفت آفلاین است ──");

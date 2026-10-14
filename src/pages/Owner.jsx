@@ -44,7 +44,7 @@ export default function Owner({ session, notify, onLogout }) {
     };
   }, []);
 
-  const totalShards = users.reduce((s, u) => s + (u.shards || 0), 0);
+  const totalMoney = users.reduce((s, u) => s + (u.shards || 0), 0);
 
   const filtered = useMemo(
     () => users.filter((u) => `${u.username} ${u.email}`.toLowerCase().includes(query.toLowerCase())),
@@ -86,7 +86,7 @@ export default function Owner({ session, notify, onLogout }) {
     }
   };
 
-  const addShards = (user) => {
+  const addMoney = (user) => {
     const n = Math.max(1, Number(amount) || 1);
     const at = new Date().toISOString();
     commit(
@@ -99,7 +99,7 @@ export default function Owner({ session, notify, onLogout }) {
             }
           : u
       ),
-      `مدیریت ${fmtNum(n)} شارد به ${user.username} افزود`
+      `مدیریت ${fmtNum(n)} پول به ${user.username} افزود`
     );
     setSelected(null);
   };
@@ -116,7 +116,7 @@ export default function Owner({ session, notify, onLogout }) {
     { icon: "users", label: "تعداد ثبت‌نام‌ها", value: users.length },
     { icon: "eye", label: "بازدیدکنندگان یکتا", value: visitors },
     { icon: "trend", label: "ورودهای ثبت‌شده", value: logins },
-    { icon: "gem", label: "کل شاردها", value: totalShards },
+    { icon: "gem", label: "کل پول بازی", value: totalMoney },
   ];
 
   return (
@@ -181,7 +181,7 @@ export default function Owner({ session, notify, onLogout }) {
                     <th>عضویت</th>
                     <th>ورودها</th>
                     <th>آخرین ورود</th>
-                    <th>شارد</th>
+                    <th>پول</th>
                     <th>عملیات</th>
                   </tr>
                 </thead>
@@ -196,7 +196,7 @@ export default function Owner({ session, notify, onLogout }) {
                       <td>{fmtNum(u.loginCount || 0)}</td>
                       <td>{u.lastLoginAt ? fmtDateTime(u.lastLoginAt) : "هنوز وارد نشده"}</td>
                       <td>
-                        <span className="pill-shard">
+                        <span className="pill-money">
                           <Icon name="gem" />
                           {fmtNum(u.shards || 0)}
                         </span>
@@ -208,8 +208,8 @@ export default function Owner({ session, notify, onLogout }) {
                               setSelected(u);
                               setAmount(100);
                             }}
-                            aria-label="جزئیات و افزودن شارد"
-                            title="جزئیات / افزودن شارد"
+                            aria-label="جزئیات و افزودن پول"
+                            title="جزئیات / افزودن پول"
                           >
                             <Icon name="plus" />
                           </button>
@@ -277,7 +277,7 @@ export default function Owner({ session, notify, onLogout }) {
                       <b>{u.username}</b> با ایمیل <b>{u.email}</b> در تاریخ <b>{fmtDateTime(u.joinedAt)}</b>{" "}
                       ثبت‌نام کرد
                       <small>
-                        تعداد ورود: {fmtNum(u.loginCount || 0)} · موجودی: {fmtNum(u.shards || 0)} شارد
+                        تعداد ورود: {fmtNum(u.loginCount || 0)} · موجودی: {fmtNum(u.shards || 0)} پول
                       </small>
                     </p>
                   </div>
@@ -311,7 +311,7 @@ export default function Owner({ session, notify, onLogout }) {
 
               <div className="detail-grid">
                 <div>
-                  <span>موجودی شارد</span>
+                  <span>موجودی پول</span>
                   <b>{fmtNum(selected.shards || 0)}</b>
                 </div>
                 <div>
@@ -329,7 +329,7 @@ export default function Owner({ session, notify, onLogout }) {
               </div>
 
               <label className="field">
-                افزودن شارد
+                افزودن پول
                 <span className="field-input">
                   <input
                     type="number"
@@ -341,7 +341,7 @@ export default function Owner({ session, notify, onLogout }) {
                 </span>
               </label>
 
-              <Button className="btn-primary btn-full" onClick={() => addShards(selected)}>
+              <Button className="btn-primary btn-full" onClick={() => addMoney(selected)}>
                 <Icon name="plus" />
                 افزودن به موجودی
               </Button>

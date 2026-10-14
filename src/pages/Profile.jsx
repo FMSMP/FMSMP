@@ -29,7 +29,7 @@ export default function Profile({ session, onLogout }) {
             <p>{user?.email}</p>
 
             <div className="balance">
-              <small>موجودی شارد</small>
+              <small>موجودی پول</small>
               <strong>
                 <Icon name="gem" />
                 {fmtNum(user?.shards || 0)}
@@ -39,7 +39,7 @@ export default function Profile({ session, onLogout }) {
             <div className="profile-actions">
               <DiscordLink className="btn btn-primary btn-full" onPurchase>
                 <Icon name="discord" />
-                خرید شارد و رنک
+                خرید پول و رنک
               </DiscordLink>
               <Button className="btn-danger btn-full" onClick={onLogout}>
                 <Icon name="logout" />
@@ -76,14 +76,14 @@ export default function Profile({ session, onLogout }) {
             </div>
 
             <div className="info-card glass">
-              <h2>تاریخچه شارد</h2>
+              <h2>تاریخچه پول</h2>
               {user?.history?.length ? (
                 <div className="feed">
                   {user.history.map((h) => (
                     <div className="feed-item gold" key={h.id}>
                       <span />
                       <p>
-                        <b>+{fmtNum(h.amount)}</b> شارد از طریق {h.type}
+                        <b>+{fmtNum(h.amount)}</b> پول از طریق {h.type}
                         <small>{fmtDateTime(h.at)}</small>
                       </p>
                     </div>

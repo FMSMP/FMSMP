@@ -500,7 +500,7 @@ td b {
   color: var(--text);
   font-weight: 700;
 }
-.pill-shard {
+.pill-money {
   display: inline-flex;
   align-items: center;
   gap: 5px;

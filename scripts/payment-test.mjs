@@ -57,11 +57,11 @@ console.log("\n── تست RCON ──");
   // ۱) رمز درست + چند دستور
   const out = await rconExec(
     { host: "127.0.0.1", port, password: "secret" },
-    ["lp user Notch parent addtemp master 30d", "points give Notch 100"]
+    ["lp user Notch parent addtemp fm 30d", "eco give Notch 100000"]
   );
   check("اجرای چند دستور", out.length === 2, `(${out.length})`);
-  check("دستور اول درست ارسال شد", received[0] === "lp user Notch parent addtemp master 30d");
-  check("دستور دوم درست ارسال شد", received[1] === "points give Notch 100");
+  check("دستور اول درست ارسال شد", received[0] === "lp user Notch parent addtemp fm 30d");
+  check("دستور دوم درست ارسال شد", received[1] === "eco give Notch 100000");
 
   // ۲) رمز اشتباه باید رد شود
   let rejected = false;
@@ -84,8 +84,8 @@ console.log("\n── تست کاتالوگ و امنیت ──");
   const { CATALOG } = await import("../server/config.mjs");
 
   check("۷ محصول تعریف شده", Object.keys(CATALOG).length === 7);
-  check("قیمت رنک مستر ۶۵۰٬۰۰۰", CATALOG["rank-master"].price === 650000);
-  check("قیمت شارد ۱۰۰۰ برابر ۱٬۰۰۰٬۰۰۰", CATALOG["shard-1000"].price === 1000000);
+  check("قیمت رنک FM ۶۵۰٬۰۰۰", CATALOG["rank-fm"].price === 650000);
+  check("قیمت بسته ۱ میلیون پول برابر ۱٬۰۰۰٬۰۰۰", CATALOG["money-1m"].price === 1000000);
 
   // مهم: دستور باید {player} داشته باشد تا جایگزین شود
   const allHavePlaceholder = Object.values(CATALOG).every((i) =>
@@ -94,8 +94,8 @@ console.log("\n── تست کاتالوگ و امنیت ──");
   check("همه دستورات جایگاه {player} دارند", allHavePlaceholder);
 
   // شبیه‌سازی جایگزینی
-  const cmd = CATALOG["rank-master"].commands[0].replaceAll("{player}", "Steve");
-  check("جایگزینی نام بازیکن", cmd === "lp user Steve parent addtemp master 30d", cmd);
+  const cmd = CATALOG["rank-fm"].commands[0].replaceAll("{player}", "Steve");
+  check("جایگزینی نام بازیکن", cmd === "lp user Steve parent addtemp fm 30d", cmd);
 }
 
 // ── تست اعتبارسنجی نام کاربری ────────────────────────────────
